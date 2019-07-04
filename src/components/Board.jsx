@@ -9,6 +9,7 @@ class Board extends React.Component {
       squares: Array(9).fill(null),
       xIsNext: null
     };
+    this.props.update(this.updateBoard.bind(this))
   }
 
   componentDidMount() {
@@ -25,18 +26,20 @@ class Board extends React.Component {
   }
 
   updateBoard() {
-    this.props.game().then(res => {
-      console.log(res);
+    this.props.game()
+    .then(res => {
       this.setState({ 
-          squares: res.data.squares,
-          xIsNext: res.data.xIsNext
+          squares: res.squares,
+          xIsNext: res.xIsNext
      });
     });
   }
 
   handleClick(i) {
-    this.props.turn(i).then(() => this.updateBoard())
-    
+    this.props.takeTurn(i).then(
+      () => {
+        this.updateBoard()
+      })
   }
 
   render() {
